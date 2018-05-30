@@ -25,7 +25,7 @@ PROGS=		unix			# Programs to build (UNIX)
 TIME_FUNC=	-DTIME			# Use time(2) for measurement
 #TIME_FUNC=	-DTIMES			# Use times(2) for measurement
 #HZ=		50			# Frequency of times(2) clock ticks
-HZ=		100			# Frequency of times(2) clock ticks
+HZ=		250			# Frequency of times(2) clock ticks
 #HZ=		100			# Frequency of times(2) clock ticks
 #HZ=		1			# Give bogus result unless changed!
 
@@ -76,6 +76,7 @@ cc_dry2reg:	$(SRC) $(HDR)
 
 gcc_dry2:		$(SRC) $(HDR)
 		$(GCC) $(GCCFLAGS) $(SRC) $(LFLAGS) -o $@
+		cp $@ armv8_$@
 
 gcc_dry2reg:	$(SRC) $(HDR)
 		$(GCC) $(GCCFLAGS) -DREG=register $(SRC) $(LFLAGS) -o $@
@@ -125,7 +126,7 @@ dry2shar.3: $(FILES3)
 	shar -v -p X $(FILES3) >$@
 
 clean:
-	-rm -f *.o *.obj
+	-rm -f *.o *.obj gcc_dry2 gcc_dry2reg armv8_gcc_dry2
 
 clobber: clean
 	-rm -f $(UNIX_PROGS) $(MSC_PROGS) dry2shar.* dry2.arc
