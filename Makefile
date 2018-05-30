@@ -15,17 +15,17 @@
 #	to run this Makefile.  The public domain "ndmake" will suffice.
 #
 CC=		cl			# C compiler name goes here (MSC)
-CC=		cc			# C compiler name goes here (UNIX)
-GCC=		gcc
+CC=		/opt/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc			# C compiler name goes here (UNIX)
+GCC=		/opt/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
 
 PROGS=		msc			# Programs to build (MSC)
 PROGS=		unix			# Programs to build (UNIX)
 
 #TIME_FUNC=	-DMSC_CLOCK		# Use Microsoft clock() for measurement
-#TIME_FUNC=	-DTIME			# Use time(2) for measurement
-TIME_FUNC=	-DTIMES			# Use times(2) for measurement
+TIME_FUNC=	-DTIME			# Use time(2) for measurement
+#TIME_FUNC=	-DTIMES			# Use times(2) for measurement
 #HZ=		50			# Frequency of times(2) clock ticks
-HZ=		60			# Frequency of times(2) clock ticks
+HZ=		100			# Frequency of times(2) clock ticks
 #HZ=		100			# Frequency of times(2) clock ticks
 #HZ=		1			# Give bogus result unless changed!
 
@@ -35,14 +35,14 @@ STRUCTASSIGN=				# Compiler can assign structs
 ENUMS=		-DNOENUMS		# Compiler doesn't have enum type
 ENUMS=					# Compiler does have enum type
 
-OPTIMIZE=	-Ox -G2			# Optimization Level (MSC, 80286)
-OPTIMIZE=	-O4			# Optimization Level (generic UNIX)
-GCCOPTIM=       -O
+#OPTIMIZE=	-Ox -G2			# Optimization Level (MSC, 80286)
+OPTIMIZE=	-O2 -march=armv8-a -mtune=cortex-a73 -fomit-frame-pointer			# Optimization Level (generic UNIX)
+GCCOPTIM=       -O2 -march=armv8-a -mtune=cortex-a73 -fomit-frame-pointer
 
 LFLAGS=					#Loader Flags
 
-CFLAGS=	$(OPTIMIZE) $(TIME_FUNC) -DHZ=$(HZ) $(ENUMS) $(STRUCTASSIGN) $(CFL)
-GCCFLAGS= $(GCCOPTIM) $(TIME_FUNC) -DHZ=$(HZ) $(ENUMS) $(STRUCTASSIGN) $(CFL)
+CFLAGS=	$(OPTIMIZE) $(TIME_FUNC) -DHZ=$(HZ) $(ENUMS) $(STRUCTASSIGN) $(CFL) -static
+GCCFLAGS= $(GCCOPTIM) $(TIME_FUNC) -DHZ=$(HZ) $(ENUMS) $(STRUCTASSIGN) $(CFL) -static
 
 #
 #		You shouldn't need to touch the rest
